@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FrontendController extends Controller
 {
@@ -15,5 +17,17 @@ class FrontendController extends Controller
         $states = json_decode(file_get_contents(public_path('backend/assets/partials/nigeria-states-lga.json')));
 
         return view('home', compact('states', 'pageTitle'));
+    }
+
+    /**
+     * Search the specified resource in storage.
+     */
+    public function ajaxSchoolSearch(Request $request)
+    {
+        if ($request->ajax()) {
+            $schools = DB::table('schools')->where('address->lga', 'LIKE', '%' .$request->lga. '%')->get();
+
+            return Response($schools);
+        }
     }
 }

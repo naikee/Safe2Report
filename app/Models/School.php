@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class School extends Model
 {
+    use Searchable;
     /**
      * The table associated with the model.
      *

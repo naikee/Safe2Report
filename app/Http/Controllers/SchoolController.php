@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class SchoolController extends Controller
 {
@@ -15,7 +17,7 @@ class SchoolController extends Controller
     public function index()
     {
         $pageTitle = __('All Schools');
-        $schools = School::orderBy('name', 'DESC')->paginate(10);
+        $schools = $this->schoolSearchData();
 
         return view('admin.schools.list', compact('pageTitle', 'schools'));
     }
@@ -245,9 +247,9 @@ class SchoolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function updateSchool(Request $request, String $id)
+    public function updateSchool(Request $request, String $id): RedirectResponse
     {
-        $validated = $request->validate([
+        $validated = Validator::make($request->all(), [
             'name'      => 'string|required|max:125',
             'email'     => 'email|required|max:125',
             'phone'     => 'string|max:125',
@@ -256,9 +258,13 @@ class SchoolController extends Controller
             'state'     => 'string|required',
             'lga'       => 'string|required',
             'country'   => 'string|required',
-            'user_id'   => 'integer|required',
             'image'     => 'image|mimes:jpg,jpeg,png,gif,svg,webp|max:10000|nullable'
         ]);
+
+        if ($validated->fails()) {
+            flash()->addWarning('Validate the input field');
+            return redirect()->route('myschool.edit', $id)->withErrors($validated)->withInput();
+        }
 
         $school = School::find($id);
 
@@ -281,9 +287,10 @@ class SchoolController extends Controller
             'postal'    => $request->postal,
             'country'   => $request->country
         ];
+        $school->status = 1;
         $school->image      = $image;
 
-        $school->update($validated);
+        $school->save();
 
         return redirect()->route('myschool.view');
     }
@@ -304,5 +311,25 @@ class SchoolController extends Controller
         flash('School successfully deleted', 'success');
 
         return redirect()->route('schools.index');
+    }
+
+    /**
+     * Search the specified resource in storage.
+     */
+    protected function schoolSearchData($scope = null)
+    {
+        if($scope) {
+            $schools = School::$scope();
+        } else {
+            $schools = School::query();
+        }
+
+        $request = request();
+
+        if($request->search) {
+            $schools->searchable(['name', 'email', 'phone', 'address->lga', 'user:id,name,username']);
+        }
+
+        return $schools->orderBy('name', 'DESC')->paginate(10);
     }
 }

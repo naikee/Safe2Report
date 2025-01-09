@@ -16,7 +16,7 @@ class ManageUsersController extends Controller
     public function index()
     {
         $pageTitle = __('School Managers');
-        $users = $this->searchData();
+        $users = $this->userSearchData();
         return view('admin.schoolmanagers.index', compact('pageTitle', 'users'));
     }
 
@@ -28,7 +28,7 @@ class ManageUsersController extends Controller
     public function activeUsers()
     {
         $pageTitle = __('Active Members');
-        $users = $this->searchData('activeUsers');
+        $users = $this->userSearchData('activeUsers');
         return view('admin.schoolmanagers.index', compact('users', 'pageTitle'));
     }
 
@@ -40,7 +40,7 @@ class ManageUsersController extends Controller
     public function pendingUsers()
     {
         $pageTitle = __('Pending Members');
-        $users = $this->searchData('pendingUsers');
+        $users = $this->userSearchData('pendingUsers');
         return view('admin.schoolmanagers.index', compact('users', 'pageTitle'));
     }
 
@@ -179,7 +179,7 @@ class ManageUsersController extends Controller
     /**
      * Search the specified resource in storage.
      */
-    protected function searchData($scope = null)
+    protected function userSearchData($scope = null)
     {
         if($scope) {
             $users = User::$scope();

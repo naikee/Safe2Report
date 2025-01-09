@@ -158,7 +158,7 @@
                             if (elementKey["state"] === stateVal) {
                                 console.log(key[i]["lgas"]);
                                 lga.empty();
-                                lga.append("<option>Select Local Government</option>");
+                                lga.append($("<option>").text(" -- Select Local Government -- "));
                                 $.each(key[i]["lgas"], function(j, value) {
                                     lga.append($("<option>").attr("value", value).text(value));
                                 })
@@ -166,7 +166,7 @@
 
                             if (stateVal === '') {
                                 lga.empty();
-                                lga.append("<option>Select Local Government</option>");
+                                lga.append($("<option>").text(" -- Select Local Government -- "));
                             }
                         }
 

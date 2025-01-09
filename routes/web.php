@@ -9,6 +9,7 @@ use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [FrontendController::class, 'create']);
+Route::get('/search', [FrontendController::class, 'ajaxSchoolSearch'])->name('search');
 
 $email_verification = get_option('email_verification', 'no');
 

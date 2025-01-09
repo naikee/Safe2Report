@@ -989,7 +989,7 @@
                                                 <select id="lga"
                                                     class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
                                                     name="lga" required>
-                                                    <option value="">{{ __('Select Local Government') }}</option>
+                                                    <option value="">{{ __(' -- Select Local Government -- ') }}</option>
                                                 </select>
                                                 <x-input-error :messages="$errors->get('lga')" class="mt-2" />
                                             </div>
@@ -999,8 +999,11 @@
                                             <!-- School Name -->
                                             <div class="text-base text-gray-600 mt-4 w-full">
                                                 <x-input-label for="name" :value="__('School Name')" />
-                                                <x-text-input id="name" name="name" type="text"
-                                                    class="mt-1 block w-full" :value="old('name')" required />
+                                                <select id="school_name"
+                                                    class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
+                                                    name="name" required>
+                                                    <option value="">{{ __('Select School') }}</option>
+                                                </select>
                                                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
                                             </div>
                                         </div>
@@ -1102,23 +1105,49 @@ Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem?
                     for (let i = 0; i < key.length; i++) {
                         const elementKey = key[i];
                         if (elementKey["state"] === stateVal) {
-                            console.log(key[i]["lgas"]);
+                            //console.log(key[i]["lgas"]);
                             lga.empty();
-                            lga.append("<option>Select Local Government</option>");
+                            lga.append($("<option>").text(" -- Select Local Government -- "));
                             $.each(key[i]["lgas"], function(j, value) {
                                 lga.append($("<option>").attr("value", value).text(value));
-                            })
+                            });
                         }
 
                         if (stateVal === '') {
                             lga.empty();
-                            lga.append("<option>Select Local Government</option>");
+                            lga.append($("<option>").text(" -- Select Local Government -- "));
                         }
                     }
 
                 });
             });
+
+            $('#lga').on('change', function() {
+                let lgaVal = $(this).val(),
+                    schoolEl = $('#school_name');
+                console.log(lgaVal);
+                schoolEl.empty();
+
+                $.ajax({
+                    url: "{{ URL::to('search') }}",
+                    method: "GET",
+                    data: {'lga': lgaVal},
+                    success: function(data) {
+                        console.log(data);
+                        schoolEl.append("<option> -- Select the School Name -- </option>");
+                        for (let i = 0; i < data.length; i++) {
+                            const dataKey = data[i];
+                            console.log(dataKey);
+                            schoolEl.append($("<option></option>").attr("value", data[i]["name"]).text(data[i]["name"]));
+                        }
+                    }
+                });
+            });
         });
+    </script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
     </script>
 </body>
 
