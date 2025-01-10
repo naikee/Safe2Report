@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>@yield('pageTitle') {{ $pageTitle . ' - ' . get_option('site_title', config('app.name', 'JOGSOBA Dashboard')) }}</title>
+    <title>@yield('pageTitle')
+        {{ $pageTitle . ' - ' . get_option('site_title', config('app.name', 'JOGSOBA Dashboard')) }}</title>
     <link rel="icon" href="{{ get_favicon() }}">
 
     <!-- Fonts -->
@@ -925,33 +926,27 @@
                         <img src="{{ app_logo() }}" alt="{{ get_option('company_name') }}" class="w-50" />
                     </div>
                     @if (Route::has('login'))
-                            <nav class="-mx-3 flex flex-1 justify-end">
-                                @auth
-                                    <a
-                                        href="{{ url('/dashboard') }}"
-                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                    >
-                                        Dashboard
-                                    </a>
-                                @else
-                                    <a
-                                        href="{{ route('login') }}"
-                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                    >
-                                        Log in
-                                    </a>
+                        <nav class="-mx-3 flex flex-1 justify-end">
+                            @auth
+                                <a href="{{ url('/dashboard') }}"
+                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                    Dashboard
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}"
+                                    class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                    Log in
+                                </a>
 
-                                    @if (Route::has('register'))
-                                        <a
-                                            href="{{ route('register') }}"
-                                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                                        >
-                                            Register
-                                        </a>
-                                    @endif
-                                @endauth
-                            </nav>
-                        @endif
+                                @if (Route::has('register'))
+                                    <a href="{{ route('register') }}"
+                                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                        Register
+                                    </a>
+                                @endif
+                            @endauth
+                        </nav>
+                    @endif
                 </header>
 
                 <main class="mt-0">
@@ -977,19 +972,21 @@
                                                     name="state" required>
                                                     <option value="">{{ __('Select State') }}</option>
                                                     @foreach ($states as $state)
-                                                        <option value="{{ $state->state }}">{{ $state->state }}</option>
+                                                        <option value="{{ $state->state }}">{{ $state->state }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                                 <x-input-error :messages="$errors->get('state')" class="mt-2" />
                                             </div>
-        
+
                                             <!-- LGA -->
                                             <div class="text-base text-gray-600 mt-4 w-full lg:w-1/2">
                                                 <x-input-label for="lga" :value="__('Local Government')" />
                                                 <select id="lga"
                                                     class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
                                                     name="lga" required>
-                                                    <option value="">{{ __(' -- Select Local Government -- ') }}</option>
+                                                    <option value="">{{ __(' -- Select Local Government -- ') }}
+                                                    </option>
                                                 </select>
                                                 <x-input-error :messages="$errors->get('lga')" class="mt-2" />
                                             </div>
@@ -1002,7 +999,7 @@
                                                 <select id="school_name"
                                                     class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
                                                     name="name" required>
-                                                    <option value="">{{ __('Select School') }}</option>
+                                                    <option value="">{{ __(' -- Select School -- ') }}</option>
                                                 </select>
                                                 <x-input-error class="mt-2" :messages="$errors->get('name')" />
                                             </div>
@@ -1011,9 +1008,12 @@
                                         <div class="flex flex-col lg:flex-row gap-8">
                                             <!-- Event Description -->
                                             <div class="text-base text-gray-600 mt-4 w-full">
-                                                <x-input-label for="event_description" :value="__('Event Description: (Including... Who, What, When, Where and How Do You Know)')" />
-                                                <x-textarea id="event_description" name="event_description" rows="6"
-                                                    class="mt-1 block w-full" required>{{ old('event_description') }}</x-textarea>
+                                                <x-input-label for="event_description" :value="__(
+                                                    'Event Description: (Including... Who, What, When, Where and How Do You Know)',
+                                                )" />
+                                                <x-textarea id="event_description" name="event_description"
+                                                    rows="6" class="mt-1 block w-full"
+                                                    required>{{ old('event_description') }}</x-textarea>
                                                 <x-input-error class="mt-2" :messages="$errors->get('event_description')" />
                                             </div>
                                         </div>
@@ -1022,14 +1022,22 @@
                                             <!-- Concern/Event Types -->
                                             <div class="text-base text-gray-600 mt-4 w-full lg:w-1/2">
                                                 <x-input-label for="event_type" :value="__('Concern/Event Types')" />
-                                                <x-text-input id="event_type" name="event_type" type="text"
-                                                    class="mt-1 block w-full" :value="old('event_type')" required />
+                                                <select id="event_type"
+                                                class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
+                                                name="event_type" required>
+                                                <option value="">{{ __(' -- Select Event Type -- ') }}</option>
+                                                @foreach ($extras->event_type as $key => $extra)
+                                                    <option value="{{ $key }}">{{ $extra }}</option>
+                                                @endforeach
+                                            </select>
                                                 <x-input-error class="mt-2" :messages="$errors->get('event_type')" />
                                             </div>
 
                                             <!-- What time and date did the event occur to the best of your recollection?-->
                                             <div class="text-base text-gray-600 mt-4 w-full lg:w-1/2">
-                                                <x-input-label for="time_date" :value="__('What time and date did the event occur to the best of your recollection?')" />
+                                                <x-input-label for="time_date" :value="__(
+                                                    'What time and date did the event occur to the best of your recollection?',
+                                                )" />
                                                 <x-text-input id="time_date" name="time_date" type="text"
                                                     class="mt-1 block w-full" :value="old('time_date')" />
                                                 <x-input-error class="mt-2" :messages="$errors->get('time_date')" />
@@ -1039,9 +1047,15 @@
                                         <!-- Social Media -->
                                         <div class="text-base text-gray-600 mt-4 w-full">
                                             <x-input-label for="social_media" :value="__('
-Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem? If so, select from one of the following:')" />
-                                            <x-text-input id="social_media" name="social_media" type="text"
-                                                class="mt-1 block w-full" :value="old('social_media')" required />
+                                            Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem? If so, select from one of the following:')" />
+                                            <select id="social_media"
+                                                class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
+                                                name="social_media">
+                                                <option value="">{{ __(' -- Select Platform -- ') }}</option>
+                                                @foreach ($extras->social_media as $key => $extra)
+                                                    <option value="{{ $key }}">{{ $extra }}</option>
+                                                @endforeach
+                                            </select>
                                             <x-input-error class="mt-2" :messages="$errors->get('social_media')" />
                                         </div>
 
@@ -1062,6 +1076,30 @@ Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem?
                                                 <x-input-error class="mt-2" :messages="$errors->get('hear_about_us')" />
                                             </div>
                                         </div>
+
+                                        <div class="flex flex-col lg:flex-row gap-8 p-3 mt-5 bg-slate-100">
+                                            <div class="flex self-center text-base text-gray-600 w-full lg:w-1/2">
+                                                <h3 class="font-semibold text-black">
+                                                    {{ __('Persons Involved Details.') }}
+                                                </h3>
+                                            </div>
+
+                                            <div class="flex justify-end text-small text-gray-600 w-full lg:w-1/2">
+                                                <select id="persons_involved"
+                                                    class="block mt-0 text-xs border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10 mr-0"
+                                                    name="persons_involved">
+                                                    <option value="" disabled selected>
+                                                        {{ __('Persons Involved') }}</option>
+                                                    <option value="1">{{ __('Persons Involved: 1') }}</option>
+                                                    <option value="2">{{ __('Persons Involved: 2') }}</option>
+                                                    <option value="3">{{ __('Persons Involved: 3') }}</option>
+                                                    <option value="4">{{ __('Persons Involved: 4') }}</option>
+                                                    <option value="5">{{ __('Persons Involved: 5') }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        @include('partials.person')
 
                                         <!-- Save button -->
                                         <div class="flex items-center justify-center gap-8 mt-6">
@@ -1107,7 +1145,8 @@ Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem?
                         if (elementKey["state"] === stateVal) {
                             //console.log(key[i]["lgas"]);
                             lga.empty();
-                            lga.append($("<option>").text(" -- Select Local Government -- "));
+                            lga.append($("<option>").attr("value", "").text(
+                                " -- Select Local Government -- "));
                             $.each(key[i]["lgas"], function(j, value) {
                                 lga.append($("<option>").attr("value", value).text(value));
                             });
@@ -1115,7 +1154,8 @@ Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem?
 
                         if (stateVal === '') {
                             lga.empty();
-                            lga.append($("<option>").text(" -- Select Local Government -- "));
+                            lga.append($("<option>").attr("value", "").text(
+                                " -- Select Local Government -- "));
                         }
                     }
 
@@ -1131,23 +1171,33 @@ Was Social Media (Facebook, Twitter, Texting, etc.) used to express the problem?
                 $.ajax({
                     url: "{{ URL::to('search') }}",
                     method: "GET",
-                    data: {'lga': lgaVal},
+                    data: {
+                        'lga': lgaVal
+                    },
                     success: function(data) {
                         console.log(data);
-                        schoolEl.append("<option> -- Select the School Name -- </option>");
+                        schoolEl.append($("<option>").attr("value", "").text(
+                            " -- Select the School Name -- "));
                         for (let i = 0; i < data.length; i++) {
                             const dataKey = data[i];
                             console.log(dataKey);
-                            schoolEl.append($("<option></option>").attr("value", data[i]["name"]).text(data[i]["name"]));
+                            schoolEl.append($("<option>").attr("value", data[i]["name"]).text(
+                                data[i]["name"]));
                         }
                     }
                 });
             });
+
+
         });
     </script>
 
     <script type="text/javascript">
-        $.ajaxSetup({ headers: { 'csrftoken' : '{{ csrf_token() }}' } });
+        $.ajaxSetup({
+            headers: {
+                'csrftoken': '{{ csrf_token() }}'
+            }
+        });
     </script>
 </body>
 

@@ -15,8 +15,9 @@ class FrontendController extends Controller
     {
         $pageTitle = 'Safe 2 Report Anonymously';
         $states = json_decode(file_get_contents(public_path('backend/assets/partials/nigeria-states-lga.json')));
+        $extras = json_decode(file_get_contents(public_path('backend/assets/partials/extra-options.json')));
 
-        return view('home', compact('states', 'pageTitle'));
+        return view('home', compact('extras', 'states', 'pageTitle'));
     }
 
     /**

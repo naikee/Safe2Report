@@ -112,7 +112,7 @@
                                         <select id="lga"
                                             class="block mt-1 w-full border-gray-300 rounded-md text-gray-900 placeholder-gray-500 pl-6 pr-10"
                                             name="lga" required>
-                                            <option value="">{{ __('Select Local Government') }}</option>
+                                            <option value="">{{ __(' -- Select Local Government -- ') }}</option>
                                         </select>
                                         <x-input-error :messages="$errors->get('lga')" class="mt-2" />
                                     </div>
@@ -228,7 +228,7 @@
                             if (elementKey["state"] === stateVal) {
                                 console.log(key[i]["lgas"]);
                                 lga.empty();
-                                lga.append($("<option>").text(" -- Select Local Government -- "));
+                                lga.append($("<option>").attr("value", "").text(" -- Select Local Government -- "));
                                 $.each(key[i]["lgas"], function(j, value) {
                                     lga.append($("<option>").attr("value", value).text(value));
                                 })
@@ -236,7 +236,7 @@
 
                             if (stateVal === '') {
                                 lga.empty();
-                                lga.append($("<option>").text(" -- Select Local Government -- "));
+                                lga.append($("<option>").attr("value", "").text(" -- Select Local Government -- "));
                             }
                         }
 
